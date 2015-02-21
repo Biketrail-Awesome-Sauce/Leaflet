@@ -35,29 +35,60 @@
 <body>
 
 	<div class="container">
-	<div class="row">
-		<div class="col-md-12">
-			<div id="map">
-			</div>
-		</div>
-	</div>
-        
-       </div>
-
+	   <div class="row">
+	       <div class="col-md-12">
+		      <div id="map">
+              </div>
+	       </div>
+        </div>
+    </div>
 
     <script type="text/javascript">
-    var mapboxTiles = L.tileLayer('https://{s}.tiles.mapbox.com/v3/examples.map-zr0njcqy/{z}/{x}/{y}.png', {
-        attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
-    });
 
+        var Acetate_basemap = L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/acetate-base/{z}/{x}/{y}.png', {
+            attribution: '&copy;2012 Esri & Stamen, Data from OSM and Natural Earth',
+            subdomains: '0123',
+            minZoom: 2,
+            maxZoom: 18
+        });
 
-    var map = L.map('map')
-        .addLayer(mapboxTiles)
-        .setView([44.96677, -93.30821], 10);
+        var Acetate_roads = L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/acetate-roads/{z}/{x}/{y}.png', {
+                attribution: '&copy;2012 Esri & Stamen, Data from OSM and Natural Earth',
+                subdomains: '0123',
+                minZoom: 2,
+                maxZoom: 14
+        });
+
+        var Esri_WorldGrayCanvas = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+            maxZoom: 16
+        });
+
+        var Esri_NatGeoWorldMap = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
+            maxZoom: 16
+        });
+
+        var map = L.map('map', {
+            center: [44.96677, -93.30821], 
+            zoom: 11,
+            layers: [Acetate_basemap]
+        });
+
+        var baseMaps = {
+            "All Roads": Esri_WorldGrayCanvas,
+            "NatGeo": Esri_NatGeoWorldMap,
+            "Some Roads": Acetate_roads,
+            "Clear Roads": Acetate_basemap
+        };
+
+        L.control.layers(baseMaps).addTo(map);        
+
     </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    
     </body>
 
     </html>
